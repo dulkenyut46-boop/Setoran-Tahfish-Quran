@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { History, Search, Filter, Download, MessageCircle, Trash2, Printer, CheckCircle2, AlertCircle, BookOpen } from 'lucide-react';
+import { History, Search, Filter, Download, MessageCircle, Trash2, Printer, CheckCircle2, AlertCircle, BookOpen, FileSpreadsheet, Upload } from 'lucide-react';
 import { Santri, SetoranRecord, SetoranType } from '../types';
 import { formatSetoranRange, KELANCARAN_CONFIG } from '../data/quranData';
 import { exportToCSV, generateWhatsAppMessage } from '../utils/tahfidzHelpers';
+import { exportFullDataToExcel, generateExcelTemplate } from '../utils/excelHelpers';
 
 interface RiwayatViewProps {
   records: SetoranRecord[];
@@ -10,6 +11,8 @@ interface RiwayatViewProps {
   onDeleteRecord: (id: string) => void;
   onViewSantriCard: (santri: Santri) => void;
   onOpenNewSetoran: () => void;
+  onOpenImportModal?: () => void;
+  onOpenDeleteAllModal?: () => void;
 }
 
 export const RiwayatView: React.FC<RiwayatViewProps> = ({
@@ -18,6 +21,8 @@ export const RiwayatView: React.FC<RiwayatViewProps> = ({
   onDeleteRecord,
   onViewSantriCard,
   onOpenNewSetoran,
+  onOpenImportModal,
+  onOpenDeleteAllModal,
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterSantri, setFilterSantri] = useState('all');
@@ -75,14 +80,41 @@ export const RiwayatView: React.FC<RiwayatViewProps> = ({
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
+          {/* Excel Full Export */}
           <button
-            onClick={handleExport}
-            className="flex items-center gap-1.5 bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-semibold px-3.5 py-2.5 rounded-xl border border-slate-300 transition-colors shadow-2xs"
+            onClick={() => exportFullDataToExcel(filteredRecords, santriList)}
+            className="flex items-center gap-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-900 text-xs font-bold px-3.5 py-2.5 rounded-xl border border-emerald-300 transition-colors shadow-2xs"
+            title="Ekspor rekap data ke Excel (.xlsx) dengan format rapi"
           >
-            <Download className="w-4 h-4 text-slate-600" />
-            <span>Ekspor CSV</span>
+            <FileSpreadsheet className="w-4 h-4 text-emerald-700" />
+            <span>Ekspor Excel (.xlsx)</span>
           </button>
+
+          {/* Import Button */}
+          {onOpenImportModal && (
+            <button
+              onClick={onOpenImportModal}
+              className="flex items-center gap-1.5 bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-semibold px-3 py-2.5 rounded-xl border border-slate-300 transition-colors shadow-2xs"
+              title="Impor data setoran dari Excel atau CSV"
+            >
+              <Upload className="w-4 h-4 text-slate-600" />
+              <span>Impor Data</span>
+            </button>
+          )}
+
+          {/* Delete All Button */}
+          {onOpenDeleteAllModal && (
+            <button
+              onClick={onOpenDeleteAllModal}
+              className="flex items-center gap-1.5 bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-bold px-3 py-2.5 rounded-xl border border-rose-200 transition-colors shadow-2xs"
+              title="Hapus atau bersihkan data riwayat setoran"
+            >
+              <Trash2 className="w-4 h-4 text-rose-600" />
+              <span className="hidden sm:inline">Hapus Data</span>
+            </button>
+          )}
+
           <button
             onClick={onOpenNewSetoran}
             className="flex items-center gap-1.5 bg-emerald-800 hover:bg-emerald-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow-xs transition-colors"

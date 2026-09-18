@@ -1,7 +1,26 @@
 import React from 'react';
-import { BookOpen, Users, CheckCircle2, TrendingUp, Award, Clock, ArrowRight, MessageCircle, Sparkles, Star, Camera, ImageIcon } from 'lucide-react';
+import { 
+  BookOpen, 
+  Users, 
+  CheckCircle2, 
+  TrendingUp, 
+  Award, 
+  Clock, 
+  ArrowRight, 
+  MessageCircle, 
+  Sparkles, 
+  Star, 
+  Camera, 
+  ImageIcon, 
+  Upload, 
+  FileSpreadsheet, 
+  Trash2, 
+  Download, 
+  Database 
+} from 'lucide-react';
 import { Santri, SetoranRecord } from '../types';
 import { getSantriStats, generateWhatsAppMessage } from '../utils/tahfidzHelpers';
+import { generateExcelTemplate, exportFullDataToExcel } from '../utils/excelHelpers';
 import { formatSetoranRange, KELANCARAN_CONFIG } from '../data/quranData';
 
 interface DashboardViewProps {
@@ -12,6 +31,9 @@ interface DashboardViewProps {
   onNavigateTab: (tab: 'santri' | 'riwayat' | 'petaJuz') => void;
   logoUrl?: string;
   onOpenLogoModal?: () => void;
+  onOpenImportModal?: () => void;
+  onOpenExportModal?: () => void;
+  onOpenDeleteAllModal?: () => void;
 }
 
 export const DashboardView: React.FC<DashboardViewProps> = ({
@@ -22,6 +44,9 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
   onNavigateTab,
   logoUrl = '/logo.png',
   onOpenLogoModal,
+  onOpenImportModal,
+  onOpenExportModal,
+  onOpenDeleteAllModal,
 }) => {
   const totalSantri = santriList.length;
   const totalSetoran = records.length;
@@ -190,6 +215,77 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           </div>
           <div className="text-2xl sm:text-3xl font-extrabold text-slate-900">{avgScore} <span className="text-sm font-normal text-slate-400">/ 100</span></div>
           <p className="text-xs text-slate-500 mt-1">Taraf kelancaran & fashohah</p>
+        </div>
+      </div>
+
+      {/* Quick Data Management Strip */}
+      <div className="bg-white rounded-2xl border border-slate-200/90 shadow-2xs p-4 sm:p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-800 flex items-center justify-center shrink-0 border border-emerald-100">
+            <FileSpreadsheet className="w-5 h-5 text-emerald-700" />
+          </div>
+          <div>
+            <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+              <span>Manajemen Spreadsheet & Basis Data</span>
+              <span className="text-[10px] bg-emerald-100 text-emerald-800 font-semibold px-2 py-0.5 rounded-full">
+                Excel .xlsx
+              </span>
+            </h3>
+            <p className="text-xs text-slate-500 mt-0.5">
+              Impor massal dari file Excel, unduh format template rapi, atau bersihkan basis data santri.
+            </p>
+          </div>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-2 w-full md:w-auto">
+          {/* Download Template Excel */}
+          <button
+            type="button"
+            onClick={() => generateExcelTemplate()}
+            className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 bg-amber-50 hover:bg-amber-100 text-amber-950 font-bold px-3.5 py-2 rounded-xl border border-amber-300 text-xs transition-colors shadow-2xs"
+            title="Unduh format Excel berisikan sheet santri, setoran & daftar 114 surat"
+          >
+            <Download className="w-3.5 h-3.5 text-amber-700" />
+            <span>Template Excel</span>
+          </button>
+
+          {/* Import Excel Button */}
+          {onOpenImportModal && (
+            <button
+              type="button"
+              onClick={onOpenImportModal}
+              className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 bg-emerald-800 hover:bg-emerald-700 text-white font-bold px-4 py-2 rounded-xl text-xs transition-colors shadow-2xs"
+              title="Unggah berkas Excel atau CSV ke sistem"
+            >
+              <Upload className="w-3.5 h-3.5 text-amber-300" />
+              <span>Impor Excel</span>
+            </button>
+          )}
+
+          {/* Export Center Button */}
+          {onOpenExportModal && (
+            <button
+              type="button"
+              onClick={onOpenExportModal}
+              className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold px-3.5 py-2 rounded-xl border border-slate-300 text-xs transition-colors"
+            >
+              <Database className="w-3.5 h-3.5 text-slate-600" />
+              <span>Ekspor & Cadangkan</span>
+            </button>
+          )}
+
+          {/* Delete All Button */}
+          {onOpenDeleteAllModal && (
+            <button
+              type="button"
+              onClick={onOpenDeleteAllModal}
+              className="inline-flex items-center justify-center gap-1.5 bg-rose-50 hover:bg-rose-100 text-rose-700 hover:text-rose-900 font-bold px-3 py-2 rounded-xl border border-rose-200 text-xs transition-colors"
+              title="Hapus semua data atau bersihkan riwayat setoran"
+            >
+              <Trash2 className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">Hapus Semua</span>
+            </button>
+          )}
         </div>
       </div>
 

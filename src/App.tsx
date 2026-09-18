@@ -7,6 +7,8 @@ import { PetaJuzView } from './components/PetaJuzView';
 import { FormSetoranModal } from './components/FormSetoranModal';
 import { KartuMutabaahModal } from './components/KartuMutabaahModal';
 import { ExportModal } from './components/ExportModal';
+import { ImportExcelModal } from './components/ImportExcelModal';
+import { DeleteAllModal } from './components/DeleteAllModal';
 import { ChangeLogoModal } from './components/ChangeLogoModal';
 import { Santri, SetoranRecord } from './types';
 import { INITIAL_SANTRI, INITIAL_SETORAN } from './data/initialData';
@@ -65,6 +67,8 @@ export default function App() {
   const [initialSantriIdForSetoran, setInitialSantriIdForSetoran] = useState<string | undefined>(undefined);
   const [selectedSantriForCard, setSelectedSantriForCard] = useState<Santri | null>(null);
   const [isExportModalOpen, setIsExportModalOpen] = useState(false);
+  const [isImportModalOpen, setIsImportModalOpen] = useState(false);
+  const [isDeleteAllModalOpen, setIsDeleteAllModalOpen] = useState(false);
   const [isChangeLogoModalOpen, setIsChangeLogoModalOpen] = useState(false);
 
   // Handlers
@@ -115,6 +119,52 @@ export default function App() {
     setRecords(newRecords);
   };
 
+  const handleImportSuccess = (
+    importedSantri: Santri[], 
+    importedRecords: SetoranRecord[], 
+    mode: 'merge' | 'overwrite'
+  ) => {
+    if (mode === 'overwrite') {
+      setSantriList(importedSantri);
+      setRecords(importedRecords);
+    } else {
+      // Merge mode: Add unique santri, avoid duplicate NISN/Names
+      const existingNisns = new Set(santriList.map(s => s.nisn).filter(Boolean));
+      const existingNames = new Set(santriList.map(s => s.nama.trim().toLowerCase()));
+      const newSantriToAdd: Santri[] = [];
+
+      importedSantri.forEach(s => {
+        const hasNisn = s.nisn && existingNisns.has(s.nisn);
+        const hasName = existingNames.has(s.nama.trim().toLowerCase());
+        if (!hasNisn && !hasName) {
+          newSantriToAdd.push(s);
+        }
+      });
+
+      const existingRecordIds = new Set(records.map(r => r.id));
+      const newRecordsToAdd = importedRecords.filter(r => !existingRecordIds.has(r.id));
+
+      setSantriList(prev => [...prev, ...newSantriToAdd]);
+      setRecords(prev => [...newRecordsToAdd, ...prev]);
+    }
+  };
+
+  const handleDeleteAll = (scope: 'all' | 'records_only') => {
+    if (scope === 'all') {
+      setSantriList([]);
+      setRecords([]);
+      setSelectedSantriForCard(null);
+    } else {
+      setRecords([]);
+    }
+  };
+
+  const handleResetToSample = () => {
+    setSantriList(INITIAL_SANTRI);
+    setRecords(INITIAL_SETORAN);
+    setSelectedSantriForCard(null);
+  };
+
   const handleSaveLogo = (newLogoUrl: string) => {
     setLogoUrl(newLogoUrl);
     try {
@@ -141,6 +191,8 @@ export default function App() {
         setActiveTab={setActiveTab}
         onOpenNewSetoran={() => handleOpenNewSetoran()}
         onOpenExportModal={() => setIsExportModalOpen(true)}
+        onOpenImportModal={() => setIsImportModalOpen(true)}
+        onOpenDeleteAllModal={() => setIsDeleteAllModalOpen(true)}
         onOpenLogoModal={() => setIsChangeLogoModalOpen(true)}
         santriCount={santriList.length}
         totalSetoranCount={records.length}
@@ -158,6 +210,9 @@ export default function App() {
             onNavigateTab={tab => setActiveTab(tab)}
             logoUrl={logoUrl}
             onOpenLogoModal={() => setIsChangeLogoModalOpen(true)}
+            onOpenImportModal={() => setIsImportModalOpen(true)}
+            onOpenExportModal={() => setIsExportModalOpen(true)}
+            onOpenDeleteAllModal={() => setIsDeleteAllModalOpen(true)}
           />
         )}
 
@@ -170,6 +225,9 @@ export default function App() {
             onDeleteSantri={handleDeleteSantri}
             onOpenNewSetoran={santriId => handleOpenNewSetoran(santriId)}
             onViewSantriCard={santri => setSelectedSantriForCard(santri)}
+            onOpenImportModal={() => setIsImportModalOpen(true)}
+            onOpenDeleteAllModal={() => setIsDeleteAllModalOpen(true)}
+            onOpenExportModal={() => setIsExportModalOpen(true)}
           />
         )}
 
@@ -180,6 +238,8 @@ export default function App() {
             onDeleteRecord={handleDeleteRecord}
             onViewSantriCard={santri => setSelectedSantriForCard(santri)}
             onOpenNewSetoran={() => handleOpenNewSetoran()}
+            onOpenImportModal={() => setIsImportModalOpen(true)}
+            onOpenDeleteAllModal={() => setIsDeleteAllModalOpen(true)}
           />
         )}
 
@@ -218,14 +278,43 @@ export default function App() {
         }}
       />
 
+      {/* Export & Data Backup Modal */}
       <ExportModal
         isOpen={isExportModalOpen}
         onClose={() => setIsExportModalOpen(false)}
         santriList={santriList}
         records={records}
         onRestoreData={handleRestoreData}
+        onOpenImportModal={() => {
+          setIsExportModalOpen(false);
+          setIsImportModalOpen(true);
+        }}
+        onOpenDeleteAllModal={() => {
+          setIsExportModalOpen(false);
+          setIsDeleteAllModalOpen(true);
+        }}
       />
 
+      {/* Excel / CSV Import Modal */}
+      <ImportExcelModal
+        isOpen={isImportModalOpen}
+        onClose={() => setIsImportModalOpen(false)}
+        existingSantri={santriList}
+        existingRecords={records}
+        onImportSuccess={handleImportSuccess}
+      />
+
+      {/* Delete All Confirmation Modal */}
+      <DeleteAllModal
+        isOpen={isDeleteAllModalOpen}
+        onClose={() => setIsDeleteAllModalOpen(false)}
+        totalSantri={santriList.length}
+        totalRecords={records.length}
+        onConfirmDelete={handleDeleteAll}
+        onResetToSample={handleResetToSample}
+      />
+
+      {/* Custom Logo Modal */}
       <ChangeLogoModal
         isOpen={isChangeLogoModalOpen}
         onClose={() => setIsChangeLogoModalOpen(false)}

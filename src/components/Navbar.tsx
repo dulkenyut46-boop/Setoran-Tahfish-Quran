@@ -1,11 +1,13 @@
 import React from 'react';
-import { BookOpen, PlusCircle, Users, History, Layers, BarChart3, Download, Camera } from 'lucide-react';
+import { BookOpen, PlusCircle, Users, History, Layers, BarChart3, Download, Camera, Upload, Trash2 } from 'lucide-react';
 
 interface NavbarProps {
   activeTab: 'dashboard' | 'santri' | 'riwayat' | 'petaJuz';
   setActiveTab: (tab: 'dashboard' | 'santri' | 'riwayat' | 'petaJuz') => void;
   onOpenNewSetoran: () => void;
   onOpenExportModal: () => void;
+  onOpenImportModal?: () => void;
+  onOpenDeleteAllModal?: () => void;
   onOpenLogoModal?: () => void;
   santriCount: number;
   totalSetoranCount: number;
@@ -17,6 +19,8 @@ export const Navbar: React.FC<NavbarProps> = ({
   setActiveTab,
   onOpenNewSetoran,
   onOpenExportModal,
+  onOpenImportModal,
+  onOpenDeleteAllModal,
   onOpenLogoModal,
   santriCount,
   totalSetoranCount,
@@ -141,20 +145,48 @@ export const Navbar: React.FC<NavbarProps> = ({
           </nav>
 
           {/* Action buttons */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            {/* Import Excel Button */}
+            {onOpenImportModal && (
+              <button
+                id="btn-nav-import"
+                onClick={onOpenImportModal}
+                title="Impor Data dari Excel (.xlsx) atau CSV"
+                className="flex items-center gap-1.5 px-2.5 py-1.5 sm:px-3 sm:py-2 text-xs font-semibold bg-emerald-800/80 hover:bg-emerald-700 text-emerald-100 hover:text-white rounded-lg transition-colors border border-emerald-700/60 shadow-xs"
+              >
+                <Upload className="w-3.5 h-3.5 text-amber-300" />
+                <span className="hidden sm:inline">Impor Data</span>
+              </button>
+            )}
+
+            {/* Export & Data Center Button */}
             <button
               id="btn-export-backup"
               onClick={onOpenExportModal}
-              title="Ekspor CSV & Cadangkan Data"
-              className="p-2 text-emerald-200 hover:text-white hover:bg-emerald-800/60 rounded-lg transition-colors"
+              title="Pusat Ekspor Excel/CSV, Unduh Template & Cadangan"
+              className="flex items-center gap-1.5 px-2.5 py-1.5 sm:px-3 sm:py-2 text-xs font-semibold bg-emerald-800/80 hover:bg-emerald-700 text-emerald-100 hover:text-white rounded-lg transition-colors border border-emerald-700/60 shadow-xs"
             >
-              <Download className="w-5 h-5" />
+              <Download className="w-3.5 h-3.5 text-emerald-300" />
+              <span className="hidden sm:inline">Kelola / Ekspor</span>
             </button>
 
+            {/* Delete All Button */}
+            {onOpenDeleteAllModal && (
+              <button
+                id="btn-delete-all-nav"
+                onClick={onOpenDeleteAllModal}
+                title="Hapus Semua Data Santri & Setoran"
+                className="p-1.5 sm:p-2 text-emerald-300 hover:text-rose-200 hover:bg-rose-950/60 rounded-lg transition-colors border border-transparent hover:border-rose-700/50"
+              >
+                <Trash2 className="w-4 h-4" />
+              </button>
+            )}
+
+            {/* New Setoran Primary Button */}
             <button
               id="btn-quick-new-setoran"
               onClick={onOpenNewSetoran}
-              className="flex items-center gap-1.5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-semibold px-3.5 py-2 rounded-lg shadow-sm hover:shadow transition-all active:scale-95 text-sm"
+              className="flex items-center gap-1.5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-semibold px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-lg shadow-sm hover:shadow transition-all active:scale-95 text-xs sm:text-sm"
             >
               <PlusCircle className="w-4 h-4 text-slate-950" />
               <span className="hidden sm:inline">Setoran Baru</span>
