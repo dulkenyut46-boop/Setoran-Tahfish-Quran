@@ -1,0 +1,211 @@
+import { Surah, JuzMeta } from '../types';
+
+export const ALL_SURAHS: Surah[] = [
+  { number: 1, name: 'Al-Fatihah', arabic: 'الفاتحة', versesCount: 7, place: 'Makkiyyah', juzStart: 1, juzEnd: 1 },
+  { number: 2, name: 'Al-Baqarah', arabic: 'البقرة', versesCount: 286, place: 'Madaniyyah', juzStart: 1, juzEnd: 3 },
+  { number: 3, name: 'Ali \'Imran', arabic: 'آل عمران', versesCount: 200, place: 'Madaniyyah', juzStart: 3, juzEnd: 4 },
+  { number: 4, name: 'An-Nisa\'', arabic: 'النساء', versesCount: 176, place: 'Madaniyyah', juzStart: 4, juzEnd: 6 },
+  { number: 5, name: 'Al-Ma\'idah', arabic: 'المائدة', versesCount: 120, place: 'Madaniyyah', juzStart: 6, juzEnd: 7 },
+  { number: 6, name: 'Al-An\'am', arabic: 'الأنعام', versesCount: 165, place: 'Makkiyyah', juzStart: 7, juzEnd: 8 },
+  { number: 7, name: 'Al-A\'raf', arabic: 'الأعراف', versesCount: 206, place: 'Makkiyyah', juzStart: 8, juzEnd: 9 },
+  { number: 8, name: 'Al-Anfal', arabic: 'الأنفال', versesCount: 75, place: 'Madaniyyah', juzStart: 9, juzEnd: 10 },
+  { number: 9, name: 'At-Taubah', arabic: 'التوبة', versesCount: 129, place: 'Madaniyyah', juzStart: 10, juzEnd: 11 },
+  { number: 10, name: 'Yunus', arabic: 'يونس', versesCount: 109, place: 'Makkiyyah', juzStart: 11, juzEnd: 11 },
+  { number: 11, name: 'Hud', arabic: 'هود', versesCount: 123, place: 'Makkiyyah', juzStart: 11, juzEnd: 12 },
+  { number: 12, name: 'Yusuf', arabic: 'يوسف', versesCount: 111, place: 'Makkiyyah', juzStart: 12, juzEnd: 13 },
+  { number: 13, name: 'Ar-Ra\'d', arabic: 'الرعد', versesCount: 43, place: 'Madaniyyah', juzStart: 13, juzEnd: 13 },
+  { number: 14, name: 'Ibrahim', arabic: 'إبراهيم', versesCount: 52, place: 'Makkiyyah', juzStart: 13, juzEnd: 13 },
+  { number: 15, name: 'Al-Hijr', arabic: 'الحجر', versesCount: 99, place: 'Makkiyyah', juzStart: 14, juzEnd: 14 },
+  { number: 16, name: 'An-Nahl', arabic: 'النحل', versesCount: 128, place: 'Makkiyyah', juzStart: 14, juzEnd: 14 },
+  { number: 17, name: 'Al-Isra\'', arabic: 'الإسراء', versesCount: 111, place: 'Makkiyyah', juzStart: 15, juzEnd: 15 },
+  { number: 18, name: 'Al-Kahf', arabic: 'الكهف', versesCount: 110, place: 'Makkiyyah', juzStart: 15, juzEnd: 16 },
+  { number: 19, name: 'Maryam', arabic: 'مريم', versesCount: 98, place: 'Makkiyyah', juzStart: 16, juzEnd: 16 },
+  { number: 20, name: 'Ta-Ha', arabic: 'طه', versesCount: 135, place: 'Makkiyyah', juzStart: 16, juzEnd: 16 },
+  { number: 21, name: 'Al-Anbiya\'', arabic: 'الأنبياء', versesCount: 112, place: 'Makkiyyah', juzStart: 17, juzEnd: 17 },
+  { number: 22, name: 'Al-Hajj', arabic: 'الحج', versesCount: 78, place: 'Madaniyyah', juzStart: 17, juzEnd: 17 },
+  { number: 23, name: 'Al-Mu\'minun', arabic: 'المؤمنون', versesCount: 118, place: 'Makkiyyah', juzStart: 18, juzEnd: 18 },
+  { number: 24, name: 'An-Nur', arabic: 'النور', versesCount: 64, place: 'Madaniyyah', juzStart: 18, juzEnd: 18 },
+  { number: 25, name: 'Al-Furqan', arabic: 'الفرقان', versesCount: 77, place: 'Makkiyyah', juzStart: 18, juzEnd: 19 },
+  { number: 26, name: 'Asy-Syu\'ara\'', arabic: 'الشعراء', versesCount: 227, place: 'Makkiyyah', juzStart: 19, juzEnd: 19 },
+  { number: 27, name: 'An-Naml', arabic: 'النمل', versesCount: 93, place: 'Makkiyyah', juzStart: 19, juzEnd: 20 },
+  { number: 28, name: 'Al-Qasas', arabic: 'القصص', versesCount: 88, place: 'Makkiyyah', juzStart: 20, juzEnd: 20 },
+  { number: 29, name: 'Al-\'Ankabut', arabic: 'العنكبوت', versesCount: 69, place: 'Makkiyyah', juzStart: 20, juzEnd: 21 },
+  { number: 30, name: 'Ar-Rum', arabic: 'الروم', versesCount: 60, place: 'Makkiyyah', juzStart: 21, juzEnd: 21 },
+  { number: 31, name: 'Luqman', arabic: 'لقمان', versesCount: 34, place: 'Makkiyyah', juzStart: 21, juzEnd: 21 },
+  { number: 32, name: 'As-Sajdah', arabic: 'السجدة', versesCount: 30, place: 'Makkiyyah', juzStart: 21, juzEnd: 21 },
+  { number: 33, name: 'Al-Ahzab', arabic: 'الأحزاب', versesCount: 73, place: 'Madaniyyah', juzStart: 21, juzEnd: 22 },
+  { number: 34, name: 'Saba\'', arabic: 'سبأ', versesCount: 54, place: 'Makkiyyah', juzStart: 22, juzEnd: 22 },
+  { number: 35, name: 'Fatir', arabic: 'فاطر', versesCount: 45, place: 'Makkiyyah', juzStart: 22, juzEnd: 22 },
+  { number: 36, name: 'Ya-Sin', arabic: 'يس', versesCount: 83, place: 'Makkiyyah', juzStart: 22, juzEnd: 23 },
+  { number: 37, name: 'As-Saffat', arabic: 'الصافات', versesCount: 182, place: 'Makkiyyah', juzStart: 23, juzEnd: 23 },
+  { number: 38, name: 'Sad', arabic: 'ص', versesCount: 88, place: 'Makkiyyah', juzStart: 23, juzEnd: 23 },
+  { number: 39, name: 'Az-Zumar', arabic: 'الزمر', versesCount: 75, place: 'Makkiyyah', juzStart: 23, juzEnd: 24 },
+  { number: 40, name: 'Ghafir', arabic: 'غافر', versesCount: 85, place: 'Makkiyyah', juzStart: 24, juzEnd: 24 },
+  { number: 41, name: 'Fussilat', arabic: 'فصلت', versesCount: 54, place: 'Makkiyyah', juzStart: 24, juzEnd: 25 },
+  { number: 42, name: 'Asy-Syura', arabic: 'الشورى', versesCount: 53, place: 'Makkiyyah', juzStart: 25, juzEnd: 25 },
+  { number: 43, name: 'Az-Zukhruf', arabic: 'الزخرف', versesCount: 89, place: 'Makkiyyah', juzStart: 25, juzEnd: 25 },
+  { number: 44, name: 'Ad-Dukhan', arabic: 'الدخان', versesCount: 59, place: 'Makkiyyah', juzStart: 25, juzEnd: 25 },
+  { number: 45, name: 'Al-Jatsiyah', arabic: 'الجاثية', versesCount: 37, place: 'Makkiyyah', juzStart: 25, juzEnd: 25 },
+  { number: 46, name: 'Al-Ahqaf', arabic: 'الأحقاف', versesCount: 35, place: 'Makkiyyah', juzStart: 26, juzEnd: 26 },
+  { number: 47, name: 'Muhammad', arabic: 'محمد', versesCount: 38, place: 'Madaniyyah', juzStart: 26, juzEnd: 26 },
+  { number: 48, name: 'Al-Fath', arabic: 'الفتح', versesCount: 29, place: 'Madaniyyah', juzStart: 26, juzEnd: 26 },
+  { number: 49, name: 'Al-Hujurat', arabic: 'الحجرات', versesCount: 18, place: 'Madaniyyah', juzStart: 26, juzEnd: 26 },
+  { number: 50, name: 'Qaf', arabic: 'ق', versesCount: 45, place: 'Makkiyyah', juzStart: 26, juzEnd: 26 },
+  { number: 51, name: 'Adz-Dzariyat', arabic: 'الذاريات', versesCount: 60, place: 'Makkiyyah', juzStart: 26, juzEnd: 27 },
+  { number: 52, name: 'At-Tur', arabic: 'الطور', versesCount: 49, place: 'Makkiyyah', juzStart: 27, juzEnd: 27 },
+  { number: 53, name: 'An-Najm', arabic: 'النجم', versesCount: 62, place: 'Makkiyyah', juzStart: 27, juzEnd: 27 },
+  { number: 54, name: 'Al-Qamar', arabic: 'القمر', versesCount: 55, place: 'Makkiyyah', juzStart: 27, juzEnd: 27 },
+  { number: 55, name: 'Ar-Rahman', arabic: 'الرحمن', versesCount: 78, place: 'Madaniyyah', juzStart: 27, juzEnd: 27 },
+  { number: 56, name: 'Al-Waqi\'ah', arabic: 'الواقعة', versesCount: 96, place: 'Makkiyyah', juzStart: 27, juzEnd: 27 },
+  { number: 57, name: 'Al-Hadid', arabic: 'الحديد', versesCount: 29, place: 'Madaniyyah', juzStart: 27, juzEnd: 27 },
+  { number: 58, name: 'Al-Mujadilah', arabic: 'المجادلة', versesCount: 22, place: 'Madaniyyah', juzStart: 28, juzEnd: 28 },
+  { number: 59, name: 'Al-Hasyr', arabic: 'الحشر', versesCount: 24, place: 'Madaniyyah', juzStart: 28, juzEnd: 28 },
+  { number: 60, name: 'Al-Mumtahanah', arabic: 'الممتحنة', versesCount: 13, place: 'Madaniyyah', juzStart: 28, juzEnd: 28 },
+  { number: 61, name: 'As-Saff', arabic: 'الصف', versesCount: 14, place: 'Madaniyyah', juzStart: 28, juzEnd: 28 },
+  { number: 62, name: 'Al-Jumu\'ah', arabic: 'الجمعة', versesCount: 11, place: 'Madaniyyah', juzStart: 28, juzEnd: 28 },
+  { number: 63, name: 'Al-Munafiqun', arabic: 'المنافقون', versesCount: 11, place: 'Madaniyyah', juzStart: 28, juzEnd: 28 },
+  { number: 64, name: 'At-Taghabun', arabic: 'التغابن', versesCount: 18, place: 'Madaniyyah', juzStart: 28, juzEnd: 28 },
+  { number: 65, name: 'At-Talaq', arabic: 'الطلاق', versesCount: 12, place: 'Madaniyyah', juzStart: 28, juzEnd: 28 },
+  { number: 66, name: 'At-Tahrim', arabic: 'التحريم', versesCount: 12, place: 'Madaniyyah', juzStart: 28, juzEnd: 28 },
+  { number: 67, name: 'Al-Mulk', arabic: 'الملك', versesCount: 30, place: 'Makkiyyah', juzStart: 29, juzEnd: 29 },
+  { number: 68, name: 'Al-Qalam', arabic: 'القلم', versesCount: 52, place: 'Makkiyyah', juzStart: 29, juzEnd: 29 },
+  { number: 69, name: 'Al-Haqqah', arabic: 'الحاقة', versesCount: 52, place: 'Makkiyyah', juzStart: 29, juzEnd: 29 },
+  { number: 70, name: 'Al-Ma\'arij', arabic: 'المعارج', versesCount: 44, place: 'Makkiyyah', juzStart: 29, juzEnd: 29 },
+  { number: 71, name: 'Nuh', arabic: 'نوح', versesCount: 28, place: 'Makkiyyah', juzStart: 29, juzEnd: 29 },
+  { number: 72, name: 'Al-Jinn', arabic: 'الجن', versesCount: 28, place: 'Makkiyyah', juzStart: 29, juzEnd: 29 },
+  { number: 73, name: 'Al-Muzzammil', arabic: 'المزمل', versesCount: 20, place: 'Makkiyyah', juzStart: 29, juzEnd: 29 },
+  { number: 74, name: 'Al-Muddatstsir', arabic: 'المدثر', versesCount: 56, place: 'Makkiyyah', juzStart: 29, juzEnd: 29 },
+  { number: 75, name: 'Al-Qiyamah', arabic: 'القيامة', versesCount: 40, place: 'Makkiyyah', juzStart: 29, juzEnd: 29 },
+  { number: 76, name: 'Al-Insan', arabic: 'الإنسان', versesCount: 31, place: 'Madaniyyah', juzStart: 29, juzEnd: 29 },
+  { number: 77, name: 'Al-Mursalat', arabic: 'المرسلات', versesCount: 50, place: 'Makkiyyah', juzStart: 29, juzEnd: 29 },
+  { number: 78, name: 'An-Naba\'', arabic: 'النبأ', versesCount: 40, place: 'Makkiyyah', juzStart: 30, juzEnd: 30 },
+  { number: 79, name: 'An-Nazi\'at', arabic: 'النازعات', versesCount: 46, place: 'Makkiyyah', juzStart: 30, juzEnd: 30 },
+  { number: 80, name: '\'Abasa', arabic: 'عبس', versesCount: 42, place: 'Makkiyyah', juzStart: 30, juzEnd: 30 },
+  { number: 81, name: 'At-Takwir', arabic: 'التكوير', versesCount: 29, place: 'Makkiyyah', juzStart: 30, juzEnd: 30 },
+  { number: 82, name: 'Al-Infitar', arabic: 'الانفطار', versesCount: 19, place: 'Makkiyyah', juzStart: 30, juzEnd: 30 },
+  { number: 83, name: 'Al-Muthaffifin', arabic: 'المطففين', versesCount: 36, place: 'Makkiyyah', juzStart: 30, juzEnd: 30 },
+  { number: 84, name: 'Al-Insyiqaq', arabic: 'الانشقاق', versesCount: 25, place: 'Makkiyyah', juzStart: 30, juzEnd: 30 },
+  { number: 85, name: 'Al-Buruj', arabic: 'البروج', versesCount: 22, place: 'Makkiyyah', juzStart: 30, juzEnd: 30 },
+  { number: 86, name: 'At-Tariq', arabic: 'الطارق', versesCount: 17, place: 'Makkiyyah', juzStart: 30, juzEnd: 30 },
+  { number: 87, name: 'Al-A\'la', arabic: 'الأعلى', versesCount: 19, place: 'Makkiyyah', juzStart: 30, juzEnd: 30 },
+  { number: 88, name: 'Al-Ghasyiyah', arabic: 'الغاشية', versesCount: 26, place: 'Makkiyyah', juzStart: 30, juzEnd: 30 },
+  { number: 89, name: 'Al-Fajr', arabic: 'الفجر', versesCount: 30, place: 'Makkiyyah', juzStart: 30, juzEnd: 30 },
+  { number: 90, name: 'Al-Balad', arabic: 'البلد', versesCount: 20, place: 'Makkiyyah', juzStart: 30, juzEnd: 30 },
+  { number: 91, name: 'Asy-Syams', arabic: 'الشمس', versesCount: 15, place: 'Makkiyyah', juzStart: 30, juzEnd: 30 },
+  { number: 92, name: 'Al-Lail', arabic: 'الليل', versesCount: 21, place: 'Makkiyyah', juzStart: 30, juzEnd: 30 },
+  { number: 93, name: 'Adh-Dhuha', arabic: 'الضحى', versesCount: 11, place: 'Makkiyyah', juzStart: 30, juzEnd: 30 },
+  { number: 94, name: 'Al-Insyirah', arabic: 'الشرح', versesCount: 8, place: 'Makkiyyah', juzStart: 30, juzEnd: 30 },
+  { number: 95, name: 'At-Tin', arabic: 'التين', versesCount: 8, place: 'Makkiyyah', juzStart: 30, juzEnd: 30 },
+  { number: 96, name: 'Al-\'Alaq', arabic: 'العلق', versesCount: 19, place: 'Makkiyyah', juzStart: 30, juzEnd: 30 },
+  { number: 97, name: 'Al-Qadr', arabic: 'القدر', versesCount: 5, place: 'Makkiyyah', juzStart: 30, juzEnd: 30 },
+  { number: 98, name: 'Al-Bayyinah', arabic: 'البينة', versesCount: 8, place: 'Madaniyyah', juzStart: 30, juzEnd: 30 },
+  { number: 99, name: 'Az-Zalzalah', arabic: 'الزلزلة', versesCount: 8, place: 'Madaniyyah', juzStart: 30, juzEnd: 30 },
+  { number: 100, name: 'Al-\'Adiyat', arabic: 'العاديات', versesCount: 11, place: 'Makkiyyah', juzStart: 30, juzEnd: 30 },
+  { number: 101, name: 'Al-Qari\'ah', arabic: 'القارعة', versesCount: 11, place: 'Makkiyyah', juzStart: 30, juzEnd: 30 },
+  { number: 102, name: 'At-Takatsur', arabic: 'التكاثر', versesCount: 8, place: 'Makkiyyah', juzStart: 30, juzEnd: 30 },
+  { number: 103, name: 'Al-\'Asr', arabic: 'العصر', versesCount: 3, place: 'Makkiyyah', juzStart: 30, juzEnd: 30 },
+  { number: 104, name: 'Al-Humazah', arabic: 'الهمزة', versesCount: 9, place: 'Makkiyyah', juzStart: 30, juzEnd: 30 },
+  { number: 105, name: 'Al-Fil', arabic: 'الفيل', versesCount: 5, place: 'Makkiyyah', juzStart: 30, juzEnd: 30 },
+  { number: 106, name: 'Quraisy', arabic: 'قريش', versesCount: 4, place: 'Makkiyyah', juzStart: 30, juzEnd: 30 },
+  { number: 107, name: 'Al-Ma\'un', arabic: 'الماعون', versesCount: 7, place: 'Makkiyyah', juzStart: 30, juzEnd: 30 },
+  { number: 108, name: 'Al-Kautsar', arabic: 'الكوثر', versesCount: 3, place: 'Makkiyyah', juzStart: 30, juzEnd: 30 },
+  { number: 109, name: 'Al-Kafirun', arabic: 'الكافرون', versesCount: 6, place: 'Makkiyyah', juzStart: 30, juzEnd: 30 },
+  { number: 110, name: 'An-Nashr', arabic: 'النصر', versesCount: 3, place: 'Madaniyyah', juzStart: 30, juzEnd: 30 },
+  { number: 111, name: 'Al-Lahab', arabic: 'المسد', versesCount: 5, place: 'Makkiyyah', juzStart: 30, juzEnd: 30 },
+  { number: 112, name: 'Al-Ikhlas', arabic: 'الإخلاص', versesCount: 4, place: 'Makkiyyah', juzStart: 30, juzEnd: 30 },
+  { number: 113, name: 'Al-Falaq', arabic: 'الفلق', versesCount: 5, place: 'Makkiyyah', juzStart: 30, juzEnd: 30 },
+  { number: 114, name: 'An-Nas', arabic: 'الناس', versesCount: 6, place: 'Makkiyyah', juzStart: 30, juzEnd: 30 }
+];
+
+export const JUZ_LIST: JuzMeta[] = [
+  { juzNumber: 1, nameArabic: 'الم', startSurah: 1, startAyat: 1, endSurah: 2, endAyat: 141 },
+  { juzNumber: 2, nameArabic: 'سيقول', startSurah: 2, startAyat: 142, endSurah: 2, endAyat: 252 },
+  { juzNumber: 3, nameArabic: 'تلك الرسل', startSurah: 2, startAyat: 253, endSurah: 3, endAyat: 92 },
+  { juzNumber: 4, nameArabic: 'لن تنالوا', startSurah: 3, startAyat: 93, endSurah: 4, endAyat: 23 },
+  { juzNumber: 5, nameArabic: 'والمحصنات', startSurah: 4, startAyat: 24, endSurah: 4, endAyat: 147 },
+  { juzNumber: 6, nameArabic: 'لا يحب الله', startSurah: 4, startAyat: 148, endSurah: 5, endAyat: 81 },
+  { juzNumber: 7, nameArabic: 'وإذا سمعوا', startSurah: 5, startAyat: 82, endSurah: 6, endAyat: 110 },
+  { juzNumber: 8, nameArabic: 'ولو أننا', startSurah: 6, startAyat: 111, endSurah: 7, endAyat: 87 },
+  { juzNumber: 9, nameArabic: 'قال الملأ', startSurah: 7, startAyat: 88, endSurah: 8, endAyat: 40 },
+  { juzNumber: 10, nameArabic: 'واعلموا', startSurah: 8, startAyat: 41, endSurah: 9, endAyat: 92 },
+  { juzNumber: 11, nameArabic: 'يعتذرون', startSurah: 9, startAyat: 93, endSurah: 11, endAyat: 5 },
+  { juzNumber: 12, nameArabic: 'وما من دابة', startSurah: 11, startAyat: 6, endSurah: 12, endAyat: 52 },
+  { juzNumber: 13, nameArabic: 'وما أبرئ', startSurah: 12, startAyat: 53, endSurah: 14, endAyat: 52 },
+  { juzNumber: 14, nameArabic: 'ربما', startSurah: 15, startAyat: 1, endSurah: 16, endAyat: 128 },
+  { juzNumber: 15, nameArabic: 'سبحان الذي', startSurah: 17, startAyat: 1, endSurah: 18, endAyat: 74 },
+  { juzNumber: 16, nameArabic: 'قال ألم', startSurah: 18, startAyat: 75, endSurah: 20, endAyat: 135 },
+  { juzNumber: 17, nameArabic: 'اقترب للناس', startSurah: 21, startAyat: 1, endSurah: 22, endAyat: 78 },
+  { juzNumber: 18, nameArabic: 'قد أفلح', startSurah: 23, startAyat: 1, endSurah: 25, endAyat: 20 },
+  { juzNumber: 19, nameArabic: 'وقال الذين', startSurah: 25, startAyat: 21, endSurah: 27, endAyat: 55 },
+  { juzNumber: 20, nameArabic: 'أمن خلق', startSurah: 27, startAyat: 56, endSurah: 29, endAyat: 45 },
+  { juzNumber: 21, nameArabic: 'اتل ما أوحي', startSurah: 29, startAyat: 46, endSurah: 33, endAyat: 30 },
+  { juzNumber: 22, nameArabic: 'ومن يقنت', startSurah: 33, startAyat: 31, endSurah: 36, endAyat: 27 },
+  { juzNumber: 23, nameArabic: 'وما لي', startSurah: 36, startAyat: 28, endSurah: 39, endAyat: 31 },
+  { juzNumber: 24, nameArabic: 'فمن أظلم', startSurah: 39, startAyat: 32, endSurah: 41, endAyat: 46 },
+  { juzNumber: 25, nameArabic: 'إليه يرد', startSurah: 41, startAyat: 47, endSurah: 45, endAyat: 37 },
+  { juzNumber: 26, nameArabic: 'حم', startSurah: 46, startAyat: 1, endSurah: 51, endAyat: 30 },
+  { juzNumber: 27, nameArabic: 'قال فما خطبكم', startSurah: 51, startAyat: 31, endSurah: 57, endAyat: 29 },
+  { juzNumber: 28, nameArabic: 'قد سمع الله', startSurah: 58, startAyat: 1, endSurah: 66, endAyat: 12 },
+  { juzNumber: 29, nameArabic: 'تبارك الذي', startSurah: 67, startAyat: 1, endSurah: 77, endAyat: 50 },
+  { juzNumber: 30, nameArabic: 'عم يتساءلون', startSurah: 78, startAyat: 1, endSurah: 114, endAyat: 6 },
+];
+
+export function getSurahByNumber(num: number): Surah | undefined {
+  return ALL_SURAHS.find(s => s.number === num);
+}
+
+export function formatSetoranRange(
+  surahMulai: number,
+  ayatMulai: number,
+  surahSelesai: number,
+  ayatSelesai: number
+): string {
+  const sMulai = getSurahByNumber(surahMulai);
+  const sSelesai = getSurahByNumber(surahSelesai);
+
+  if (!sMulai) return `Surat ${surahMulai}:${ayatMulai} - ${surahSelesai}:${ayatSelesai}`;
+
+  if (surahMulai === surahSelesai) {
+    return `${sMulai.name} (${sMulai.arabic}) ayat ${ayatMulai} - ${ayatSelesai}`;
+  }
+
+  return `${sMulai.name} (${ayatMulai}) s.d ${sSelesai?.name || surahSelesai} (${ayatSelesai})`;
+}
+
+export const KELANCARAN_CONFIG: Record<string, { label: string; sublabel: string; color: string; bg: string; minScore: number }> = {
+  mumtaz: {
+    label: 'Mumtaz (A)',
+    sublabel: 'Sangat Lancar & Fasih',
+    color: 'text-emerald-700',
+    bg: 'bg-emerald-50 border-emerald-300',
+    minScore: 95
+  },
+  jayyid_jiddan: {
+    label: 'Jayyid Jiddan (B+)',
+    sublabel: 'Lancar dengan Sedikit Catatan',
+    color: 'text-teal-700',
+    bg: 'bg-teal-50 border-teal-300',
+    minScore: 85
+  },
+  jayyid: {
+    label: 'Jayyid (B)',
+    sublabel: 'Cukup Lancar',
+    color: 'text-amber-700',
+    bg: 'bg-amber-50 border-amber-300',
+    minScore: 75
+  },
+  maqbul: {
+    label: 'Maqbul (C)',
+    sublabel: 'Kurang Lancar / Terbata',
+    color: 'text-orange-700',
+    bg: 'bg-orange-50 border-orange-300',
+    minScore: 65
+  },
+  rasib: {
+    label: 'Rasib / Ulang',
+    sublabel: 'Belum Lancar, Perlu Tikror',
+    color: 'text-rose-700',
+    bg: 'bg-rose-50 border-rose-300',
+    minScore: 50
+  }
+};
