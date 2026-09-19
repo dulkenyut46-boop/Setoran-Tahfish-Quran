@@ -16,9 +16,13 @@ import {
   FileSpreadsheet, 
   Trash2, 
   Download, 
-  Database 
+  Database,
+  Settings,
+  Building2,
+  Sliders,
+  HardDrive
 } from 'lucide-react';
-import { Santri, SetoranRecord } from '../types';
+import { Santri, SetoranRecord, SchoolProfile } from '../types';
 import { getSantriStats, generateWhatsAppMessage } from '../utils/tahfidzHelpers';
 import { generateExcelTemplate, exportFullDataToExcel } from '../utils/excelHelpers';
 import { formatSetoranRange, KELANCARAN_CONFIG } from '../data/quranData';
@@ -28,8 +32,9 @@ interface DashboardViewProps {
   records: SetoranRecord[];
   onOpenNewSetoran: (santriId?: string) => void;
   onViewSantriCard: (santri: Santri) => void;
-  onNavigateTab: (tab: 'santri' | 'riwayat' | 'petaJuz') => void;
+  onNavigateTab: (tab: 'santri' | 'riwayat' | 'petaJuz' | 'pengaturan') => void;
   logoUrl?: string;
+  schoolProfile?: SchoolProfile;
   onOpenLogoModal?: () => void;
   onOpenImportModal?: () => void;
   onOpenExportModal?: () => void;
@@ -43,13 +48,16 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
   onViewSantriCard,
   onNavigateTab,
   logoUrl = '/logo.png',
+  schoolProfile,
   onOpenLogoModal,
   onOpenImportModal,
   onOpenExportModal,
   onOpenDeleteAllModal,
 }) => {
+  const currentSchoolName = schoolProfile?.namaSekolah || 'MTs Sirojut Tholibin';
   const totalSantri = santriList.length;
   const totalSetoran = records.length;
+
   
   // Today's records
   const todayStr = new Date().toISOString().slice(0, 10);
@@ -124,7 +132,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             <div className="space-y-2">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-700/60 border border-emerald-500/40 text-emerald-200 text-xs font-semibold">
                 <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-                <span>Program Tahfidzul Qur'an • MTs Sirojut Tholibin</span>
+                <span>Program Tahfidzul Qur'an • {currentSchoolName}</span>
               </div>
 
               <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
@@ -132,7 +140,9 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               </h2>
 
               <p className="text-emerald-100/90 text-sm sm:text-base leading-relaxed max-w-2xl">
-                Memonitor kelancaran ziyadah dan muroja'ah santri MTs Sirojut Tholibin dengan tertib, terarah, dan transparan bagi wali santri.
+                {schoolProfile?.slogan 
+                  ? schoolProfile.slogan 
+                  : `Memonitor kelancaran ziyadah dan muroja'ah santri ${currentSchoolName} dengan tertib, terarah, dan transparan bagi wali santri.`}
               </p>
             </div>
           </div>
@@ -146,15 +156,13 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               <BookOpen className="w-4 h-4" />
               <span>+ Catat Setoran Baru</span>
             </button>
-            {onOpenLogoModal && (
-              <button
-                onClick={onOpenLogoModal}
-                className="flex-1 sm:flex-none bg-emerald-800/80 hover:bg-emerald-700 text-white font-semibold px-4 py-2 rounded-xl border border-emerald-600/50 transition-all text-xs flex items-center justify-center gap-1.5"
-              >
-                <Camera className="w-3.5 h-3.5 text-amber-300" />
-                <span>Ubah Logo Dashboard</span>
-              </button>
-            )}
+            <button
+              onClick={() => onNavigateTab('pengaturan')}
+              className="flex-1 sm:flex-none bg-emerald-800/80 hover:bg-emerald-700 text-white font-semibold px-4 py-2 rounded-xl border border-emerald-600/50 transition-all text-xs flex items-center justify-center gap-1.5"
+            >
+              <Settings className="w-3.5 h-3.5 text-amber-300" />
+              <span>Menu Pengaturan</span>
+            </button>
           </div>
         </div>
       </div>
@@ -286,6 +294,103 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               <span className="hidden sm:inline">Hapus Semua</span>
             </button>
           )}
+        </div>
+      </div>
+
+      {/* Menu Pengaturan di Dashboard */}
+      <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-emerald-950 rounded-2xl p-5 sm:p-6 text-white shadow-md space-y-4">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-slate-700/80 pb-4">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-amber-500/20 border border-amber-500/40 text-amber-300 flex items-center justify-center shrink-0">
+              <Settings className="w-5 h-5" />
+            </div>
+            <div>
+              <h3 className="text-base font-bold text-white flex items-center gap-2">
+                <span>Menu Pengaturan Sistem & Madrasah</span>
+                <span className="text-[10px] bg-amber-400/20 text-amber-300 border border-amber-400/40 font-semibold px-2 py-0.5 rounded-full">
+                  Konfigurasi Lengkap
+                </span>
+              </h3>
+              <p className="text-xs text-slate-300 mt-0.5">
+                Kelola profil sekolah, cadangkan basis data, dan sesuaikan standar penilaian tahfidz.
+              </p>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => onNavigateTab('pengaturan')}
+            className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-bold px-4 py-2 rounded-xl transition-all shadow-sm active:scale-95"
+          >
+            <span>Buka Pengaturan</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </button>
+        </div>
+
+        {/* 3 Quick Action Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 pt-1">
+          {/* 1. Profil Sekolah */}
+          <div 
+            onClick={() => onNavigateTab('pengaturan')}
+            className="bg-white/5 hover:bg-white/10 p-4 rounded-xl border border-white/10 cursor-pointer transition-all hover:border-emerald-500/50 group"
+          >
+            <div className="flex items-center gap-3 mb-2">
+              <div className="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-300 flex items-center justify-center group-hover:scale-105 transition-transform">
+                <Building2 className="w-4 h-4" />
+              </div>
+              <h4 className="font-bold text-xs text-white group-hover:text-amber-300 transition-colors">
+                1. Profil Sekolah & Kop
+              </h4>
+            </div>
+            <p className="text-[11px] text-slate-300 line-clamp-2">
+              {currentSchoolName} • Kepala: {schoolProfile?.kepalaSekolah || 'KH. M. Sirojuddin'}
+            </p>
+            <span className="text-[10px] text-emerald-400 font-semibold mt-2 inline-flex items-center gap-1 group-hover:underline">
+              Ubah Profil & Logo &rarr;
+            </span>
+          </div>
+
+          {/* 2. Penyimpan Data Base */}
+          <div 
+            onClick={() => onNavigateTab('pengaturan')}
+            className="bg-white/5 hover:bg-white/10 p-4 rounded-xl border border-white/10 cursor-pointer transition-all hover:border-emerald-500/50 group"
+          >
+            <div className="flex items-center gap-3 mb-2">
+              <div className="w-8 h-8 rounded-lg bg-sky-500/20 text-sky-300 flex items-center justify-center group-hover:scale-105 transition-transform">
+                <HardDrive className="w-4 h-4" />
+              </div>
+              <h4 className="font-bold text-xs text-white group-hover:text-amber-300 transition-colors">
+                2. Penyimpanan Basis Data
+              </h4>
+            </div>
+            <p className="text-[11px] text-slate-300 line-clamp-2">
+              Snapshot JSON, Ekspor Excel 4-Sheet, Pulihkan Database, & Bersihkan Data.
+            </p>
+            <span className="text-[10px] text-sky-400 font-semibold mt-2 inline-flex items-center gap-1 group-hover:underline">
+              Kelola Basis Data &rarr;
+            </span>
+          </div>
+
+          {/* 3. Pengaturan Lainnya */}
+          <div 
+            onClick={() => onNavigateTab('pengaturan')}
+            className="bg-white/5 hover:bg-white/10 p-4 rounded-xl border border-white/10 cursor-pointer transition-all hover:border-emerald-500/50 group"
+          >
+            <div className="flex items-center gap-3 mb-2">
+              <div className="w-8 h-8 rounded-lg bg-purple-500/20 text-purple-300 flex items-center justify-center group-hover:scale-105 transition-transform">
+                <Sliders className="w-4 h-4" />
+              </div>
+              <h4 className="font-bold text-xs text-white group-hover:text-amber-300 transition-colors">
+                3. Standar Penilaian & WA
+              </h4>
+            </div>
+            <p className="text-[11px] text-slate-300 line-clamp-2">
+              Batas KKM Nilai, Ambang Kelancaran, Template Pesan WhatsApp Wali Santri.
+            </p>
+            <span className="text-[10px] text-purple-400 font-semibold mt-2 inline-flex items-center gap-1 group-hover:underline">
+              Atur Penilaian &rarr;
+            </span>
+          </div>
         </div>
       </div>
 

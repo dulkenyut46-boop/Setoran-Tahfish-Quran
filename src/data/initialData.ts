@@ -1,4 +1,4 @@
-import { Santri, SetoranRecord } from '../types';
+import { Santri, SetoranRecord, SchoolProfile, AppSettings } from '../types';
 
 export const INITIAL_SANTRI: Santri[] = [
   {
@@ -197,3 +197,49 @@ export const INITIAL_SETORAN: SetoranRecord[] = [
     createdAt: '2024-11-19T06:45:00Z'
   }
 ];
+
+export const DEFAULT_SCHOOL_PROFILE: SchoolProfile = {
+  namaSekolah: 'MTs Sirojut Tholibin',
+  programName: "Lembaga Pendidikan & Pengembangan Tahfidzul Qur'an",
+  logoUrl: '/logo.png',
+  npsn: '20584123',
+  nsm: '121235170012',
+  alamat: 'Jl. Pesantren No. 07, Sirojut Tholibin',
+  email: 'mtssirojuttholibin07@gmail.com',
+  telepon: '0812-3456-7890',
+  kepalaSekolah: 'KH. M. Sirojuddin, M.Pd',
+  nipKepalaSekolah: '197508122003121002',
+  koordinatorTahfidz: 'Ust. Ahmad Fauzan, Al-Hafidz',
+  nipKoordinator: '198804152015031004',
+  tahunAjaran: '2024 / 2025',
+  semester: 'Ganjil',
+  slogan: "Mencetak Generasi Qur'ani yang Berakhlakul Karimah, Cerdas, dan Berprestasi",
+};
+
+export const DEFAULT_APP_SETTINGS = {
+  kkmNilai: 75,
+  mumtazMin: 90,
+  jayyidJiddanMin: 80,
+  jayyidMin: 70,
+  maqbulMin: 60,
+  enableConfetti: true,
+  enableHijriDate: true,
+  defaultTargetJuz: 5,
+  waTemplate: `Assalamu'alaikum Wr. Wb.
+Bapak/Ibu Wali dari {nama},
+
+Alhamdulillah, berikut laporan evaluasi mutaba'ah hafalan Al-Qur'an terbaru di {namaSekolah}:
+• Tanggal: {tanggal}
+• Jenis: {tipe}
+• Surat/Ayat: {surat}
+• Juz: {juz}
+• Kategori Kelancaran: {kelancaran}
+• Nilai Angka: {nilai} / 100
+• Hasil: {status}
+• Catatan Musyrif: {catatan}
+
+Ustadz Penguji: {ustadz}
+Mohon senantiasa didoakan dan dimotivasi saat santri di rumah.
+Wassalamu'alaikum Wr. Wb.`,
+};
+

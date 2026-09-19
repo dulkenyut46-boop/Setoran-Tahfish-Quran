@@ -1,6 +1,6 @@
 import React from 'react';
 import { X, Printer, MessageCircle, BookOpen, CheckCircle, Award, Calendar, User } from 'lucide-react';
-import { Santri, SetoranRecord } from '../types';
+import { Santri, SetoranRecord, SchoolProfile } from '../types';
 import { getSantriStats, generateWhatsAppMessage } from '../utils/tahfidzHelpers';
 import { formatSetoranRange, KELANCARAN_CONFIG } from '../data/quranData';
 
@@ -11,6 +11,7 @@ interface KartuMutabaahModalProps {
   records: SetoranRecord[];
   onOpenNewSetoranForSantri?: (santriId: string) => void;
   logoUrl?: string;
+  schoolProfile?: SchoolProfile;
 }
 
 export const KartuMutabaahModal: React.FC<KartuMutabaahModalProps> = ({
@@ -20,8 +21,10 @@ export const KartuMutabaahModal: React.FC<KartuMutabaahModalProps> = ({
   records,
   onOpenNewSetoranForSantri,
   logoUrl = '/logo.png',
+  schoolProfile,
 }) => {
   if (!isOpen || !santri) return null;
+
 
   const stats = getSantriStats(santri, records);
   const santriRecords = stats.records;
@@ -93,13 +96,15 @@ export const KartuMutabaahModal: React.FC<KartuMutabaahModalProps> = ({
               </div>
               <div className="flex-1 px-4 text-center">
                 <h1 className="text-lg sm:text-xl font-bold uppercase tracking-wider text-emerald-950">
-                  MADRASAH TSANAWIYAH SIROJUT THOLIBIN
+                  {schoolProfile?.namaSekolah || "MADRASAH TSANAWIYAH SIROJUT THOLIBIN"}
                 </h1>
-                <p className="text-xs font-semibold text-emerald-800 tracking-wide">
-                  LEMBAGA PENDIDIKAN & PENGEMBANGAN TAHFIDZUL QUR'AN
+                <p className="text-xs font-semibold text-emerald-800 tracking-wide uppercase">
+                  {schoolProfile?.programName || "LEMBAGA PENDIDIKAN & PENGEMBANGAN TAHFIDZUL QUR'AN"}
                 </p>
                 <p className="text-[11px] text-slate-500 mt-0.5">
-                  Jl. Pesantren No. 07, Sirojut Tholibin • Email: mtssirojuttholibin07@gmail.com
+                  {schoolProfile?.alamat || "Jl. Pesantren No. 07, Sirojut Tholibin"}
+                  {schoolProfile?.email ? ` • Email: ${schoolProfile.email}` : ''}
+                  {schoolProfile?.telepon ? ` • Telp: ${schoolProfile.telepon}` : ''}
                 </p>
                 <div className="font-quran text-base text-emerald-900 font-bold mt-1">
                   كِتَابُ مُتَابَعَةِ حِفْظِ الْقُرْآنِ الْكَرِيمِ
@@ -118,7 +123,7 @@ export const KartuMutabaahModal: React.FC<KartuMutabaahModalProps> = ({
             <h2 className="text-base sm:text-lg font-extrabold uppercase text-slate-900 tracking-tight">
               KARTU KENDALI & MUTABA'AH SETORAN HAFALAN
             </h2>
-            <p className="text-xs text-slate-500">Tahun Ajaran 2024 / 2025</p>
+            <p className="text-xs text-slate-500">Tahun Ajaran {schoolProfile?.tahunAjaran || '2024 / 2025'}</p>
           </div>
 
           {/* Biodata Santri Card */}
@@ -314,7 +319,10 @@ export const KartuMutabaahModal: React.FC<KartuMutabaahModalProps> = ({
             <div>
               <p className="text-slate-500 mb-12">Kepala Madrasah /<br />Koordinator Tahfidz</p>
               <div className="border-b border-slate-400 w-36 mx-auto"></div>
-              <p className="font-semibold mt-1">KH. M. Sirojuddin, M.Pd</p>
+              <p className="font-semibold mt-1">{schoolProfile?.kepalaSekolah || 'KH. M. Sirojuddin, M.Pd'}</p>
+              {schoolProfile?.nipKepalaSekolah && (
+                <p className="text-[10px] text-slate-400">NIP: {schoolProfile.nipKepalaSekolah}</p>
+              )}
             </div>
           </div>
         </div>

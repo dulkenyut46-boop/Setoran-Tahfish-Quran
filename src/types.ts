@@ -54,3 +54,34 @@ export interface JuzMeta {
   endSurah: number;
   endAyat: number;
 }
+
+export interface SchoolProfile {
+  namaSekolah: string;
+  programName?: string;
+  logoUrl?: string;
+  npsn: string;
+  nsm: string;
+  alamat: string;
+  email: string;
+  telepon: string;
+  kepalaSekolah: string;
+  nipKepalaSekolah: string;
+  koordinatorTahfidz: string;
+  nipKoordinator: string;
+  tahunAjaran: string;
+  semester: 'Ganjil' | 'Genap';
+  slogan: string;
+}
+
+export interface AppSettings {
+  kkmNilai: number;
+  mumtazMin: number;
+  jayyidJiddanMin: number;
+  jayyidMin: number;
+  maqbulMin: number;
+  enableConfetti: boolean;
+  enableHijriDate: boolean;
+  defaultTargetJuz: number;
+  waTemplate: string;
+}
+

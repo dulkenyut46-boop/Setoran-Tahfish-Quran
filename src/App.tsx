@@ -4,14 +4,15 @@ import { DashboardView } from './components/DashboardView';
 import { SantriListView } from './components/SantriListView';
 import { RiwayatView } from './components/RiwayatView';
 import { PetaJuzView } from './components/PetaJuzView';
+import { PengaturanView } from './components/PengaturanView';
 import { FormSetoranModal } from './components/FormSetoranModal';
 import { KartuMutabaahModal } from './components/KartuMutabaahModal';
 import { ExportModal } from './components/ExportModal';
 import { ImportExcelModal } from './components/ImportExcelModal';
 import { DeleteAllModal } from './components/DeleteAllModal';
 import { ChangeLogoModal } from './components/ChangeLogoModal';
-import { Santri, SetoranRecord } from './types';
-import { INITIAL_SANTRI, INITIAL_SETORAN } from './data/initialData';
+import { Santri, SetoranRecord, SchoolProfile, AppSettings } from './types';
+import { INITIAL_SANTRI, INITIAL_SETORAN, DEFAULT_SCHOOL_PROFILE, DEFAULT_APP_SETTINGS } from './data/initialData';
 
 export default function App() {
   // Load state from localStorage with fallbacks
@@ -42,6 +43,25 @@ export default function App() {
     }
   });
 
+  // School Profile & Settings State
+  const [schoolProfile, setSchoolProfile] = useState<SchoolProfile>(() => {
+    try {
+      const saved = localStorage.getItem('tahfidz_school_profile_v1');
+      return saved ? JSON.parse(saved) : DEFAULT_SCHOOL_PROFILE;
+    } catch {
+      return DEFAULT_SCHOOL_PROFILE;
+    }
+  });
+
+  const [appSettings, setAppSettings] = useState<AppSettings>(() => {
+    try {
+      const saved = localStorage.getItem('tahfidz_app_settings_v1');
+      return saved ? JSON.parse(saved) : DEFAULT_APP_SETTINGS;
+    } catch {
+      return DEFAULT_APP_SETTINGS;
+    }
+  });
+
   // Save changes to localStorage
   useEffect(() => {
     try {
@@ -59,8 +79,24 @@ export default function App() {
     }
   }, [records]);
 
+  useEffect(() => {
+    try {
+      localStorage.setItem('tahfidz_school_profile_v1', JSON.stringify(schoolProfile));
+    } catch (err) {
+      console.error('Failed to save school profile to localStorage', err);
+    }
+  }, [schoolProfile]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('tahfidz_app_settings_v1', JSON.stringify(appSettings));
+    } catch (err) {
+      console.error('Failed to save app settings to localStorage', err);
+    }
+  }, [appSettings]);
+
   // Tab navigation
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'santri' | 'riwayat' | 'petaJuz'>('dashboard');
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'santri' | 'riwayat' | 'petaJuz' | 'pengaturan'>('dashboard');
 
   // Modals state
   const [isFormSetoranOpen, setIsFormSetoranOpen] = useState(false);
@@ -167,6 +203,7 @@ export default function App() {
 
   const handleSaveLogo = (newLogoUrl: string) => {
     setLogoUrl(newLogoUrl);
+    setSchoolProfile(prev => ({ ...prev, logoUrl: newLogoUrl }));
     try {
       localStorage.setItem('tahfidz_custom_logo_v1', newLogoUrl);
     } catch (e) {
@@ -176,10 +213,23 @@ export default function App() {
 
   const handleResetLogo = () => {
     setLogoUrl('/logo.png');
+    setSchoolProfile(prev => ({ ...prev, logoUrl: '/logo.png' }));
     try {
       localStorage.removeItem('tahfidz_custom_logo_v1');
     } catch (e) {
       console.error('Failed to reset logo', e);
+    }
+  };
+
+  const handleUpdateSchoolProfile = (newProfile: SchoolProfile) => {
+    setSchoolProfile(newProfile);
+    if (newProfile.logoUrl && newProfile.logoUrl !== logoUrl) {
+      setLogoUrl(newProfile.logoUrl);
+      try {
+        localStorage.setItem('tahfidz_custom_logo_v1', newProfile.logoUrl);
+      } catch (e) {
+        console.error('Failed to save logo to localStorage', e);
+      }
     }
   };
 
@@ -197,6 +247,7 @@ export default function App() {
         santriCount={santriList.length}
         totalSetoranCount={records.length}
         logoUrl={logoUrl}
+        schoolName={schoolProfile.namaSekolah}
       />
 
       {/* Main Page Area */}
@@ -209,6 +260,7 @@ export default function App() {
             onViewSantriCard={santri => setSelectedSantriForCard(santri)}
             onNavigateTab={tab => setActiveTab(tab)}
             logoUrl={logoUrl}
+            schoolProfile={schoolProfile}
             onOpenLogoModal={() => setIsChangeLogoModalOpen(true)}
             onOpenImportModal={() => setIsImportModalOpen(true)}
             onOpenExportModal={() => setIsExportModalOpen(true)}
@@ -251,6 +303,24 @@ export default function App() {
             onViewSantriCard={santri => setSelectedSantriForCard(santri)}
           />
         )}
+
+        {activeTab === 'pengaturan' && (
+          <PengaturanView
+            schoolProfile={schoolProfile}
+            onSaveSchoolProfile={handleUpdateSchoolProfile}
+            appSettings={appSettings}
+            onSaveAppSettings={setAppSettings}
+            santriList={santriList}
+            records={records}
+            onRestoreData={handleRestoreData}
+            onOpenDeleteAllModal={() => setIsDeleteAllModalOpen(true)}
+            onResetToSample={handleResetToSample}
+            onOpenImportModal={() => setIsImportModalOpen(true)}
+            onOpenLogoModal={() => setIsChangeLogoModalOpen(true)}
+            onResetLogo={handleResetLogo}
+            logoUrl={logoUrl}
+          />
+        )}
       </main>
 
       {/* Modals */}
@@ -272,6 +342,7 @@ export default function App() {
         santri={selectedSantriForCard}
         records={records}
         logoUrl={logoUrl}
+        schoolProfile={schoolProfile}
         onOpenNewSetoranForSantri={santriId => {
           setSelectedSantriForCard(null);
           handleOpenNewSetoran(santriId);
@@ -327,7 +398,7 @@ export default function App() {
       <footer className="no-print bg-white border-t border-slate-200/80 py-6 text-xs text-slate-500 text-center">
         <div className="max-w-7xl mx-auto px-4 space-y-1">
           <p className="font-semibold text-slate-700">
-            Aplikasi Setoran & Mutaba'ah Tahfidz Al-Qur'an • MTs Sirojut Tholibin
+            Aplikasi Setoran & Mutaba'ah Tahfidz Al-Qur'an • {schoolProfile.namaSekolah}
           </p>
           <p className="text-slate-400">
             "Sebaik-baik kalian adalah orang yang belajar Al-Qur'an dan mengajarkannya." (HR. Bukhari)

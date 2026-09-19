@@ -1,9 +1,9 @@
 import React from 'react';
-import { BookOpen, PlusCircle, Users, History, Layers, BarChart3, Download, Camera, Upload, Trash2 } from 'lucide-react';
+import { BookOpen, PlusCircle, Users, History, Layers, BarChart3, Download, Camera, Upload, Trash2, Settings } from 'lucide-react';
 
 interface NavbarProps {
-  activeTab: 'dashboard' | 'santri' | 'riwayat' | 'petaJuz';
-  setActiveTab: (tab: 'dashboard' | 'santri' | 'riwayat' | 'petaJuz') => void;
+  activeTab: 'dashboard' | 'santri' | 'riwayat' | 'petaJuz' | 'pengaturan';
+  setActiveTab: (tab: 'dashboard' | 'santri' | 'riwayat' | 'petaJuz' | 'pengaturan') => void;
   onOpenNewSetoran: () => void;
   onOpenExportModal: () => void;
   onOpenImportModal?: () => void;
@@ -12,6 +12,7 @@ interface NavbarProps {
   santriCount: number;
   totalSetoranCount: number;
   logoUrl?: string;
+  schoolName?: string;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -25,6 +26,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   santriCount,
   totalSetoranCount,
   logoUrl = '/logo.png',
+  schoolName = 'MTs Sirojut Tholibin',
 }) => {
   return (
     <header className="no-print sticky top-0 z-30 bg-emerald-900 text-white shadow-md border-b border-emerald-800">
@@ -33,7 +35,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-2">
             <span className="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-            <span>Program Tahfidzul Qur'an • MTs Sirojut Tholibin</span>
+            <span>Program Tahfidzul Qur'an • {schoolName}</span>
           </div>
           <div className="hidden sm:flex items-center gap-4 text-emerald-300/80">
             <span>{santriCount} Santri Terdaftar</span>
@@ -59,7 +61,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               <div className="w-10 h-10 rounded-xl bg-white p-1 flex items-center justify-center shadow-md ring-2 ring-emerald-500/40 group-hover:ring-amber-400 transition-all overflow-hidden">
                 <img 
                   src={logoUrl} 
-                  alt="Logo MTs Sirojut Tholibin" 
+                  alt={`Logo ${schoolName}`} 
                   className="w-full h-full object-contain transition-transform group-hover:scale-105"
                   onError={(e) => {
                     // Fallback to generic icon if image fails
@@ -142,6 +144,19 @@ export const Navbar: React.FC<NavbarProps> = ({
               <Layers className="w-4 h-4" />
               <span>Peta 30 Juz</span>
             </button>
+
+            <button
+              id="nav-tab-pengaturan"
+              onClick={() => setActiveTab('pengaturan')}
+              className={`flex items-center gap-2 px-3.5 py-2 rounded-lg text-sm font-medium transition-colors ${
+                activeTab === 'pengaturan'
+                  ? 'bg-amber-500 text-slate-950 font-bold shadow-sm'
+                  : 'text-emerald-100/80 hover:bg-emerald-800/40 hover:text-white'
+              }`}
+            >
+              <Settings className="w-4 h-4" />
+              <span>Pengaturan</span>
+            </button>
           </nav>
 
           {/* Action buttons */}
@@ -200,7 +215,7 @@ export const Navbar: React.FC<NavbarProps> = ({
       <div className="md:hidden flex border-t border-emerald-800/80 bg-emerald-950/60 px-2 py-1 justify-around text-xs">
         <button
           onClick={() => setActiveTab('dashboard')}
-          className={`flex flex-col items-center py-1.5 px-3 rounded-md ${
+          className={`flex flex-col items-center py-1.5 px-2 rounded-md ${
             activeTab === 'dashboard' ? 'text-amber-400 font-semibold' : 'text-emerald-200/70'
           }`}
         >
@@ -209,7 +224,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         </button>
         <button
           onClick={() => setActiveTab('santri')}
-          className={`flex flex-col items-center py-1.5 px-3 rounded-md ${
+          className={`flex flex-col items-center py-1.5 px-2 rounded-md ${
             activeTab === 'santri' ? 'text-amber-400 font-semibold' : 'text-emerald-200/70'
           }`}
         >
@@ -218,7 +233,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         </button>
         <button
           onClick={() => setActiveTab('riwayat')}
-          className={`flex flex-col items-center py-1.5 px-3 rounded-md ${
+          className={`flex flex-col items-center py-1.5 px-2 rounded-md ${
             activeTab === 'riwayat' ? 'text-amber-400 font-semibold' : 'text-emerald-200/70'
           }`}
         >
@@ -227,14 +242,24 @@ export const Navbar: React.FC<NavbarProps> = ({
         </button>
         <button
           onClick={() => setActiveTab('petaJuz')}
-          className={`flex flex-col items-center py-1.5 px-3 rounded-md ${
+          className={`flex flex-col items-center py-1.5 px-2 rounded-md ${
             activeTab === 'petaJuz' ? 'text-amber-400 font-semibold' : 'text-emerald-200/70'
           }`}
         >
           <Layers className="w-4 h-4 mb-0.5" />
           <span>Peta Juz</span>
         </button>
+        <button
+          onClick={() => setActiveTab('pengaturan')}
+          className={`flex flex-col items-center py-1.5 px-2 rounded-md ${
+            activeTab === 'pengaturan' ? 'text-amber-400 font-semibold' : 'text-emerald-200/70'
+          }`}
+        >
+          <Settings className="w-4 h-4 mb-0.5" />
+          <span>Pengaturan</span>
+        </button>
       </div>
     </header>
   );
 };
+
